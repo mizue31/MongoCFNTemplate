@@ -131,7 +131,7 @@
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
                           { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
         "InstanceType"   : { "Ref" : "InstanceType" },
-        "SecurityGroups" : [ {"Ref" : "WebServerSecurityGroup"} ],
+        "SecurityGroups" : [ {"Ref" : "MongoServerSecurityGroup"} ],
         "KeyName"        : { "Ref" : "KeyName" },
         "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
           "#!/bin/bash -xe\n",
@@ -169,12 +169,12 @@
       }
     },
     
-    "WebServerSecurityGroup" : {
+    "MongoServerSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-        "GroupDescription" : "Enable HTTP and SSH access",
+        "GroupDescription" : "Enable Mongo and SSH access",
         "SecurityGroupIngress" : [
-          {"IpProtocol" : "tcp", "FromPort" : "3000", "ToPort" : "3000", "CidrIp" : "0.0.0.0/0"},
+          {"IpProtocol" : "tcp", "FromPort" : "27017", "ToPort" : "27017", "CidrIp" : "0.0.0.0/0"},
           {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"}}
         ]
       }
